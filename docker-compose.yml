@@ -44,6 +44,19 @@ services:
         condition: service_healthy
     logging: *logging
 
+  seq:
+    image: datalust/seq:preview
+    container_name: seqotelcontainer
+    restart: unless-stopped
+    ports: 
+      - "5341:80"
+    environment:
+      ACCEPT_EULA: "Y"
+    depends_on:
+      otelcol:
+        condition: service_started
+
+
   # AdService
   adservice:
     image: ${IMAGE_NAME}:${IMAGE_VERSION}-adservice
@@ -352,10 +365,6 @@ services:
       featureflagservice:
         condition: service_started
       loadgenerator:
-        condition: service_started
-      jaeger:
-        condition: service_started
-      grafana:
         condition: service_started
 
   # Load Generator
