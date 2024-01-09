@@ -17,10 +17,6 @@ receivers:
 
 exporters:
   debug:
-  otlp:
-    endpoint: "jaeger:4317"
-    tls:
-      insecure: true
   otlp/logs:
     endpoint: "dataprepper:21892"
     tls:
@@ -56,11 +52,11 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlp, debug, spanmetrics]
+      exporters: [debug, spanmetrics]
     metrics:
       receivers: [httpcheck/frontendproxy, otlp, spanmetrics]
       processors: [filter/ottl, transform, batch]
-      exporters: [otlphttp/prometheus, debug]
+      exporters: [debug]
     logs:
       receivers: [otlp]
       processors: [batch]
